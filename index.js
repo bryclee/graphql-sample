@@ -1,35 +1,23 @@
 const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+const { makeExecutableSchema } = require('graphql-tools');
 
 const graphql = require('graphql');
 const apolloUtils = require('apollo-utilities');
 
-const typeDefs = gql`
-  type Query {
-    name: String
-    books: [Book]
-  }
-
-  type Book {
-    name: String
-    rating: Int
-  }
-`;
-
-const resolvers = {
-  Query: {
-    name: () => 'sample',
-    books: () => {
-      return [
-        { name: 'sample book 1', rating: 5 },
-        { name: 'sample book 2', rating: 4 },
-      ];
-    },
-  },
-};
+const typeDefs = require('./src/typeDefs');
+const resolvers = require('./src/resolvers');
+const schemaDirectives = require('./src/directives');
 
 const app = express();
-const server = new ApolloServer({ typeDefs, resolvers });
+const schema = makeExecutableSchema({ typeDefs, resolvers, schemaDirectives });
+const server = new ApolloServer({
+  schema,
+});
+
+console.log('Schema:', schema);
+console.log(schema.getQueryType().getFields());
+console.log(typeof schema.getDirectives()[0]);
 
 server.applyMiddleware({ app });
 
