@@ -8,10 +8,8 @@ const server = new ApolloServer({
   schema,
 });
 
-console.log('Schema:', schema);
-
 // console.log('Calling "visit" parser');
-// require('./parsers/visit')({ schema });
+require('./parsers/transform')({ schema });
 
 server.applyMiddleware({ app });
 

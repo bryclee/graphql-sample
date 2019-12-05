@@ -8,5 +8,37 @@
  * - What about union interfaces?
  * */
 const { transformSchema } = require('graphql-tools');
+const {
+  visitSchema,
+  VisitSchemaKind,
+} = require('graphql-tools/dist/transforms/visitSchema');
 
-module.exports = ({ schema, query }) => {};
+module.exports = ({ schema, query }) => {
+  visitSchema(schema, {
+    [VisitSchemaKind.OBJECT_TYPE]: type => {
+      const fields = type.getFields();
+
+      Object.keys(fields).forEach(field => {
+        console.log(field.getDirectives());
+      });
+
+      // export type GraphQLType =
+      // | GraphQLScalarType
+      // -> nothing - return parent
+      // | GraphQLObjectType
+      // -> getFields, check for leaf fields
+      // | GraphQLInterfaceType
+      // -> nothing
+      // | GraphQLUnionType
+      // -> change resolver?
+      // | GraphQLEnumType
+      // -> nothing?
+      // | GraphQLInputObjectType
+      // -> nothing?
+      // | GraphQLList<any>
+      // -> change resolver to return one of each?
+      // | GraphQLNonNull<any>;
+      // -> what is this?
+    },
+  });
+};
