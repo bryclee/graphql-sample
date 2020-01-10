@@ -8,7 +8,14 @@ const typeDefs = gql`
 
   type Book {
     name: String
-    rating: Int
+    rating: Float
+    category: BookCategory
+  }
+
+  enum BookCategory {
+    FICTION
+    NON_FICTION
+    SCIENCE_FICTION
   }
 
   directive @sla(timeout: Int) on FIELD_DEFINITION

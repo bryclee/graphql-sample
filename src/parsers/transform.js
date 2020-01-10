@@ -19,7 +19,8 @@ module.exports = ({ schema, query }) => {
       const fields = type.getFields();
 
       Object.keys(fields).forEach(field => {
-        console.log(field.getDirectives());
+        // console.log(field.getDirectives());
+        console.log(field);
       });
 
       // export type GraphQLType =
